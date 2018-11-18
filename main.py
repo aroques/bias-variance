@@ -9,9 +9,20 @@ def main():
     m_avg = round(np.average(m), 2)
     b_avg = round(np.average(b), 2)
 
-    print('average hypothesis: y = {0}x + {1}'.format(m_avg, b_avg))
+    avg_g = 'y = {}x + {}'.format(m_avg, b_avg)
+    bias = calculate_bias(get_x(), m_avg, b_avg)
+    var = calculate_var(get_x(), m, b, m_avg, b_avg)
+    
+    print_data('avg g(x)', avg_g)
+    print_data('bias', bias)
+    print_data('var', var)
+    print_data('eout', round(bias + var, 2))
 
     plot_exp(m_avg, b_avg)
+
+
+def print_data(label, value, width=10):
+    print('{:{}}: {}'.format(label, width, value))
 
 
 def get_experiment_data(num_datasets):
@@ -39,6 +50,22 @@ def get_y_intercept(p, m):
     # y = mx - mx1 + y1
     # let b = -mx1 + y1
     return -m * p[:, 0] + p[:, 1]
+
+
+def calculate_bias(x, m_avg, b_avg):
+    g_avg = m_avg * x + b_avg
+    f_x = np.square(x)
+    return round(np.average(np.square(g_avg - f_x)), 2)
+
+
+def calculate_var(x, m, b, m_avg, b_avg):
+    g_x = m * x + b
+    g_avg = m_avg * x + b_avg
+    return round(np.average(np.square(g_x - g_avg)) / x.shape[0], 2)
+
+
+def get_x():
+    return np.linspace(-1, 1, 10000000)
 
 
 def plot_exp(m_avg, b_avg):
