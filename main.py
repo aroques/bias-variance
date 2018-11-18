@@ -8,8 +8,25 @@ def main():
 
     m_avg = round(np.average(m), 2)
     b_avg = round(np.average(b), 2)
-    
+
     print('average hypothesis: y = {0}x + {1}'.format(m_avg, b_avg))
+
+    plot_exp(m_avg, b_avg)
+
+
+def plot_exp(m_avg, b_avg):
+    plt.style.use('seaborn-whitegrid')
+    fig, ax = plt.subplots()
+    
+    ax.set(title='Problem 2.24, p. 75', xlim=(-1, 1), ylim=(0, 1))
+
+    x = np.linspace(-1, 1, 30)
+    
+    ax.plot(x, np.square(x), label='f(x)')
+    ax.plot(x, m_avg * x + b_avg, color='r', label='avg g(x)')
+    
+    ax.legend(facecolor='w', fancybox=True, frameon=True, edgecolor='black', borderpad=1)
+    plt.show()
 
 
 def get_y_intercept(p, m):
