@@ -1,10 +1,14 @@
 import numpy as np
 
 def main():
-    p1, p2 = get_experiment_data(num_datasets=100000)
+    p1, p2 = get_experiment_data(num_datasets=30000000)
     m = get_slope(p1, p2)
     b = get_y_intercept(p1, m)
-    print(b.shape)
+
+    m_avg = round(np.average(m), 2)
+    b_avg = round(np.average(b), 2)
+    
+    print('average hypothesis: y = {0}x + {1}'.format(m_avg, b_avg))
 
 
 def get_y_intercept(p, m):
