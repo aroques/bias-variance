@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def main():
-    num_datasets = 10000000
+    num_datasets = 10000
     target_fn = np.square
     
     p1, p2 = get_experiment_data(num_datasets, target_fn)
@@ -58,16 +58,22 @@ def get_y_intercept(p, m):
 def calculate_bias(x, m_avg, b_avg, target_fn):
     g_avg = hypothesis_fn(m_avg, x, b_avg)
     f_x = target_fn(x)
-    return round(mean_squared_error(g_avg, f_x), 2)
+    return round(mean_sum_squared_error(g_avg, f_x), 2)
 
 
 def calculate_var(x, m, b, m_avg, b_avg):
-    g_x = hypothesis_fn(m, x, b)
     g_avg = hypothesis_fn(m_avg, x, b_avg)
-    return round(mean_squared_error(g_x, g_avg) / x.shape[0], 2)
+
+    variances = []
+    for this_m, this_b in zip(m, b):
+        g_x = hypothesis_fn(this_m, x, this_b)
+        var = mean_sum_squared_error(g_x, g_avg)
+        variances.append(var)
+
+    return round(np.average(np.array(variances) / x.shape[0]), 2)
 
 
-def mean_squared_error(x1, x2):
+def mean_sum_squared_error(x1, x2):
     return np.average(np.square(x1 - x2))
 
 
