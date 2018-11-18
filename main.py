@@ -1,7 +1,7 @@
 import numpy as np
 
 def main():
-    p1, p2 = get_experiment_data(num_samples=20000)
+    p1, p2 = get_experiment_data(num_datasets=100000)
     print(p1[0])
     print(p2[0])
 
@@ -18,10 +18,10 @@ def get_slope(p1, p2):
     return p2[1] - p1[1] / p2[0] - p1[0]
 
 
-def get_experiment_data(num_samples):
+def get_experiment_data(num_datasets):
+    num_samples = num_datasets * 2
     s = np.random.uniform(-1, 1, num_samples)
-    num_rows = int(num_samples / 2)
-    s = s.reshape(num_rows, 2)
+    s = s.reshape(num_datasets, 2)
 
     x1, x2 = s[:, 0], s[:, 1]
     x1_squared, x2_squared = np.square(x1), np.square(x2)
