@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 def main():
     p1, p2 = get_experiment_data(num_datasets=30000000)
