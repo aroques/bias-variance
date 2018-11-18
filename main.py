@@ -55,14 +55,14 @@ def get_y_intercept(p, m):
 
 
 def calculate_bias(x, m_avg, b_avg, target_fn):
-    g_avg = m_avg * x + b_avg
+    g_avg = hypothesis_fn(m_avg, x, b_avg)
     f_x = target_fn(x)
     return round(np.average(target_fn(g_avg - f_x)), 2)
 
 
 def calculate_var(x, m, b, m_avg, b_avg):
-    g_x = m * x + b
-    g_avg = m_avg * x + b_avg
+    g_x = hypothesis_fn(m, x, b)
+    g_avg = hypothesis_fn(m_avg, x, b_avg)
     return round(np.average(np.square(g_x - g_avg)) / x.shape[0], 2)
 
 
@@ -70,7 +70,11 @@ def get_x(num_pts):
     return np.linspace(-1, 1, num_pts)
 
 
-def plot_exp(m_avg, b_avg, targer_fn):
+def hypothesis_fn(m, x, b):
+    return m * x + b
+
+
+def plot_exp(m_avg, b_avg, target_fn):
     plt.style.use('seaborn-whitegrid')
     fig, ax = plt.subplots()
     
@@ -78,8 +82,8 @@ def plot_exp(m_avg, b_avg, targer_fn):
 
     x = np.linspace(-1, 1, 30)
     
-    ax.plot(x, targer_fn(x), label='f(x)')
-    ax.plot(x, m_avg * x + b_avg, color='r', label='avg g(x)')
+    ax.plot(x, target_fn(x), label='f(x)')
+    ax.plot(x, hypothesis_fn(m_avg, x, b_avg), color='r', label='avg g(x)')
     
     ax.legend(facecolor='w', fancybox=True, frameon=True, edgecolor='black', borderpad=1)
     plt.show()
