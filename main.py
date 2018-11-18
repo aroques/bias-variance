@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 def main():
     num_datasets = 10000000
     target_fn = np.square
+    
     p1, p2 = get_experiment_data(num_datasets, target_fn)
     m = get_slope(p1, p2)
     b = get_y_intercept(p1, m)
@@ -57,13 +58,17 @@ def get_y_intercept(p, m):
 def calculate_bias(x, m_avg, b_avg, target_fn):
     g_avg = hypothesis_fn(m_avg, x, b_avg)
     f_x = target_fn(x)
-    return round(np.average(target_fn(g_avg - f_x)), 2)
+    return round(mean_squared_error(g_avg, f_x), 2)
 
 
 def calculate_var(x, m, b, m_avg, b_avg):
     g_x = hypothesis_fn(m, x, b)
     g_avg = hypothesis_fn(m_avg, x, b_avg)
-    return round(np.average(np.square(g_x - g_avg)) / x.shape[0], 2)
+    return round(mean_squared_error(g_x, g_avg) / x.shape[0], 2)
+
+
+def mean_squared_error(x1, x2):
+    return np.average(np.square(x1 - x2))
 
 
 def get_x(num_pts):
