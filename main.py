@@ -9,19 +9,17 @@ def main():
     m = get_slope(p1, p2)
     b = get_y_intercept(p1, m)
 
-    m_avg = round(np.average(m), 2)
-    b_avg = round(np.average(b), 2)
-
-    avg_g = 'y = {}x + {}'.format(m_avg, b_avg)
-    bias = calculate_bias(get_x(num_datasets), m_avg, b_avg, target_fn)
-    var = calculate_var(get_x(num_datasets), m, b, m_avg, b_avg)
+    bias = calculate_bias(get_x(num_datasets), m, b, target_fn)
+    #var = calculate_var(get_x(num_datasets), m, b)
     
-    print_data('avg g(x)', avg_g)
-    print_data('bias', bias)
-    print_data('var', var)
-    print_data('e_out', round(bias + var, 2))
+    #avg_g = 'none'
 
-    plot_exp(m_avg, b_avg, target_fn)
+    #print_data('avg g(x)', avg_g)
+    print_data('bias', bias)
+    #print_data('var', var)
+    #print_data('e_out', round(bias + var, 2))
+
+    #plot_exp(m, b, target_fn)
 
 
 def print_data(label, value, width=10):
@@ -55,26 +53,35 @@ def get_y_intercept(p, m):
     return -m * p[:, 0] + p[:, 1]
 
 
-def calculate_bias(x, m_avg, b_avg, target_fn):
-    g_avg = hypothesis_fn(m_avg, x, b_avg)
-    f_x = target_fn(x)
-    return round(mean_sum_squared_error(g_avg, f_x), 2)
+def calculate_bias(x, m, b, target_fn):
+    g_avg = np.full_like(x, 1)
+    f_x = np.full_like(x, 1)
+    for i, this_x in enumerate(x):
+        g_avg[i] = calculate_g_avg(m, this_x, b)
+        f_x[i] = target_fn(this_x)
+    return mean_sum_squared_error(g_avg, f_x) 
 
 
-def calculate_var(x, m, b, m_avg, b_avg):
-    g_avg = hypothesis_fn(m_avg, x, b_avg)
-
-    variances = []
-    for this_m, this_b in zip(m, b):
-        g_x = hypothesis_fn(this_m, x, this_b)
-        var = mean_sum_squared_error(g_x, g_avg)
-        variances.append(var)
-
-    return round(np.average(np.array(variances) / x.shape[0]), 2)
+def calculate_g_avg(m, x, b):
+    # this must take in a single x
+    x_vect = np.full_like(m, x)
+    return np.average(hypothesis_fn(m, x_vect, b))
 
 
 def mean_sum_squared_error(x1, x2):
     return np.average(np.square(x1 - x2))
+
+
+def calculate_var(x, m, b):
+    g = hypothesis_fn(m, x, b)
+
+    variances = []
+    for this_m, this_b in zip(m, b):
+        g_x = hypothesis_fn(this_m, x, this_b)
+        var = mean_sum_squared_error(g_x, g)
+        variances.append(var)
+
+    return round(np.average(np.array(variances)), 2)
 
 
 def get_x(num_pts):
