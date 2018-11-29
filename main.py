@@ -12,14 +12,11 @@ def main():
     bias = calculate_bias(get_x(num_datasets), m, b, target_fn)
     var = calculate_var(get_x(num_datasets), m, b)
     
-    #avg_g = 'none'
-
-    #print_data('avg g(x)', avg_g)
     print_data('bias', bias)
-    #print_data('var', var)
-    #print_data('e_out', round(bias + var, 2))
+    print_data('var', var)
+    print_data('e_out', round(bias + var, 2))
 
-    #plot_exp(m, b, target_fn)
+    plot_exp(m, b, target_fn)
 
 
 def print_data(label, value, width=10):
@@ -56,7 +53,13 @@ def get_y_intercept(p, m):
 def calculate_bias(x, m, b, target_fn):
     g_avg = get_g_avg_vect(x, m, b)
     f_x = target_fn(x)
-    return mean_sum_squared_error(g_avg, f_x) 
+    return round(mean_sum_squared_error(g_avg, f_x), 2) 
+
+
+def calculate_var(x, m, b):
+    g = hypothesis_fn(m, x, b)
+    g_avg = get_g_avg_vect(x, m, b)
+    return round(mean_sum_squared_error(g, g_avg), 2)
 
 
 def get_g_avg_vect(x, m, b):
@@ -76,18 +79,6 @@ def mean_sum_squared_error(x1, x2):
     return np.average(np.square(x1 - x2))
 
 
-def calculate_var(x, m, b):
-    g = hypothesis_fn(m, x, b)
-
-    variances = []
-    for this_m, this_b in zip(m, b):
-        g_x = hypothesis_fn(this_m, x, this_b)
-        var = mean_sum_squared_error(g_x, g)
-        variances.append(var)
-
-    return round(np.average(np.array(variances)), 2)
-
-
 def get_x(num_pts):
     return np.linspace(-1, 1, num_pts)
 
@@ -96,7 +87,7 @@ def hypothesis_fn(m, x, b):
     return m * x + b
 
 
-def plot_exp(m_avg, b_avg, target_fn):
+def plot_exp(m, b, target_fn):
     plt.style.use('seaborn-whitegrid')
     fig, ax = plt.subplots()
     
@@ -105,7 +96,7 @@ def plot_exp(m_avg, b_avg, target_fn):
     x = np.linspace(-1, 1, 30)
     
     ax.plot(x, target_fn(x), label='f(x)')
-    ax.plot(x, hypothesis_fn(m_avg, x, b_avg), color='r', label='avg g(x)')
+    ax.plot(x, get_g_avg_vect(x, m, b), color='r', label='avg g(x)')
     
     ax.legend(facecolor='w', fancybox=True, frameon=True, edgecolor='black', borderpad=1)
     plt.show()
