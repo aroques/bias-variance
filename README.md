@@ -2,6 +2,9 @@
 
 Problem 2.24, p. 75.
 
+For each final hypotheisis g1, g2, ..., gk estimate the average hypothesis for any x by:
+![analytic expression of average hypothesis](img/average_hypothesis.gif)
+
 ## Installation
 
 See https://pipenv.readthedocs.io/en/latest/install/#installing-pipenv to install *pipenv*, if you do not have it.

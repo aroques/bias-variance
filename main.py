@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def main():
-    num_datasets = 50
+    num_datasets = 20
     target_fn = np.square
     
     p1, p2 = get_experiment_data(num_datasets, target_fn)
