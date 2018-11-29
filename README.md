@@ -2,7 +2,7 @@
 
 Problem 2.24, p. 75.
 
-For each final hypotheisis g1, g2, ..., gk estimate the average hypothesis for any x by:
+For each final hypotheisis g1, g2, ..., gk estimate the average hypothesis for any x by:  
 ![analytic expression of average hypothesis](img/average_hypothesis.gif)
 
 ## Installation
