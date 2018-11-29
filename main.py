@@ -10,7 +10,7 @@ def main():
     b = get_y_intercept(p1, m)
 
     bias = calculate_bias(get_x(num_datasets), m, b, target_fn)
-    #var = calculate_var(get_x(num_datasets), m, b)
+    var = calculate_var(get_x(num_datasets), m, b)
     
     #avg_g = 'none'
 
@@ -54,12 +54,16 @@ def get_y_intercept(p, m):
 
 
 def calculate_bias(x, m, b, target_fn):
+    g_avg = get_g_avg_vect(x, m, b)
+    f_x = target_fn(x)
+    return mean_sum_squared_error(g_avg, f_x) 
+
+
+def get_g_avg_vect(x, m, b):
     g_avg = np.full_like(x, 1)
-    f_x = np.full_like(x, 1)
     for i, this_x in enumerate(x):
         g_avg[i] = calculate_g_avg(m, this_x, b)
-        f_x[i] = target_fn(this_x)
-    return mean_sum_squared_error(g_avg, f_x) 
+    return g_avg
 
 
 def calculate_g_avg(m, x, b):
