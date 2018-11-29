@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def main():
-    num_datasets = 10000
+    num_datasets = 50
     target_fn = np.square
     
     p1, p2 = get_experiment_data(num_datasets, target_fn)
@@ -94,7 +94,11 @@ def plot_exp(m, b, target_fn):
     ax.set(title='Problem 2.24, p. 75')
 
     x = np.linspace(-1, 1, 30)
-    
+
+    # plot each hypothesis fn
+    for this_m, this_b in zip(m, b):
+        ax.plot(x, hypothesis_fn(this_m, x, this_b), color='gray', alpha=0.2)
+
     ax.plot(x, target_fn(x), label='f(x)')
     ax.plot(x, get_g_avg_vect(x, m, b), color='r', label='avg g(x)')
     
