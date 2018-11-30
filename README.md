@@ -6,7 +6,7 @@ For each final hypotheisis g1, g2, ..., gk estimate the average hypothesis for a
 ![analytic expression of average hypothesis](img/average_hypothesis.gif)
 
 
-![Results of Experiment](img/bias_var_exp_results.gif)
+![Results of Experiment](img/bias_var_exp_results.png)
 
 
 ## Installation
