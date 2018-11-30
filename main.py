@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def main():
-    num_datasets = 20
+    num_datasets = 30
     target_fn = np.square
     
     p1, p2 = get_experiment_data(num_datasets, target_fn)
@@ -39,7 +39,7 @@ def get_experiment_data(num_datasets, target_fn):
 
 def get_slope(p1, p2):
     # slope = (y2 - y1) / (x2 - x1)
-    return p2[:, 1] - p1[:, 1] / p2[:, 0] - p1[:, 0]
+    return (p2[:, 1] - p1[:, 1]) / (p2[:, 0] - p1[:, 0])
 
 
 def get_y_intercept(p, m):
